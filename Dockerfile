@@ -1,7 +1,7 @@
 FROM golang:1.22.1 as BASE
 WORKDIR /src
 COPY . .
-RUN go mod download
+#RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /bin src/main.go
 
 FROM golang:1.22.1-alpine3.19 as FINAL
