@@ -49,8 +49,8 @@ jobs:
         token: ${{ secrets.GIT_PASSWORD }}
     - name: modify the image
       run: |
-        git config user.email '${{ USRMAIL }}'
-        git config user.name '${{ USR }}'
+        git config user.email '$USRMAIL'
+        git config user.name '$USR'
         pwd
         cd ./gitops-argocd/app02-golang/overlays/Staging
         pwd
