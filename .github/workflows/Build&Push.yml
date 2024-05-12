@@ -18,7 +18,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v4
       with:
-        images: $IMAGEREPO
+        images: ${{ env.IMAGEREPO }}
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
     - name: Set up Docker Buildx
