@@ -45,7 +45,7 @@ jobs:
     - name: changing the deployment of git repo
       uses: actions/checkout@v4
       with:
-        repository: '$GITREPO'
+        repository: '$ {{ var.GITREPO }}'
         token: ${{ secrets.GIT_PASSWORD }}
     - name: modify the image
       run: |
