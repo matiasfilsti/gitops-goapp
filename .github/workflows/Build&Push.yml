@@ -48,19 +48,19 @@ jobs:
         repository: '$GITREPO'
         token: ${{ secrets.GIT_PASSWORD }}
     - name: modify the image
-        run: |
-          git config user.email '${{ USRMAIL }}'
-          git config user.name '${{ USR }}'
-          pwd
-          cd ./gitops-argocd/app02-golang/overlays/Staging
-          pwd
-          cat kustomization.yaml
-          sed -i 's/newTag: .*/newTag: ${{ github.sha }}/' kustomization.yaml
-          cat kustomization.yaml
-          git add .
-          git commit -m 'Done  by Github Actions   Job changemanifest: ${{ github.run_number }}'
-          git push origin main
-        env:
-          GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
-          GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
-          RUN_NUMBER: ${{ github.run_number }}
+      run: |
+        git config user.email '${{ USRMAIL }}'
+        git config user.name '${{ USR }}'
+        pwd
+        cd ./gitops-argocd/app02-golang/overlays/Staging
+        pwd
+        cat kustomization.yaml
+        sed -i 's/newTag: .*/newTag: ${{ github.sha }}/' kustomization.yaml
+        cat kustomization.yaml
+        git add .
+        git commit -m 'Done  by Github Actions   Job changemanifest: ${{ github.run_number }}'
+        git push origin main
+      env:
+        GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+        GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+        RUN_NUMBER: ${{ github.run_number }}
