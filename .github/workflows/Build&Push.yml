@@ -37,7 +37,7 @@ jobs:
         push: true
         tags: |
            ${{ steps.meta.outputs.tags }} 
-           $IMAGEREPO:${{ github.sha }}
+           ${{ IMAGEREPO }}:${{ github.sha }}
   deploy-staging:
     needs: build
     runs-on: ubuntu-latest
