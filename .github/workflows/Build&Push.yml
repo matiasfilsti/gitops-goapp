@@ -51,8 +51,9 @@ jobs:
       run: |
         git config user.email '$USRMAIL'
         git config user.name '$USR'
+        ls -la
         pwd
-        cd ./gitops-argocd/app02-golang/overlays/Staging
+        cd ./app02-golang/overlays/Staging
         pwd
         cat kustomization.yaml
         sed -i 's/newTag: .*/newTag: ${{ github.sha }}/' kustomization.yaml
