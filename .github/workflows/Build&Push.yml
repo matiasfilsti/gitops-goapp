@@ -42,11 +42,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-        name: changing the deployment of git repo
-        with:
-          repository: '$GITREPO'
-          token: ${{ secrets.GIT_PASSWORD }}
+    - name: changing the deployment of git repo
+      uses: actions/checkout@v4
+      with:
+        repository: '$GITREPO'
+        token: ${{ secrets.GIT_PASSWORD }}
     - name: modify the image
         run: |
           git config user.email '${{ USRMAIL }}'
