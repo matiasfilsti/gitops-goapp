@@ -46,9 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: approved
-        env: 
-          ENV_NAME: Staging
-        run: write-host "Approve for $($env.ENV_NAME)"
+        run: write-host "Approve for Staging"
   deploy-staging:
     needs: staging-approval-gate
     runs-on: ubuntu-latest
@@ -82,9 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: approved
-        env: 
-          ENV_NAME: Production
-        run: write-host "Approve for $($env.ENV_NAME)"
+        run: write-host "Approve for Production"
   deploy-production:
     needs: Production-approval-gate
     runs-on: ubuntu-latest
