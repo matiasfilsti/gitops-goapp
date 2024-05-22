@@ -44,6 +44,9 @@ jobs:
     needs: build
     environment: Staging
     runs-on: ubuntu-latest
+    steps:
+      - name: approved
+        run: echo "Approve for Staging"
   deploy-staging:
     needs: staging-approval-gate
     runs-on: ubuntu-latest
@@ -75,6 +78,9 @@ jobs:
     needs: deploy-staging
     environment: Production
     runs-on: ubuntu-latest
+    steps:
+      - name: approved
+        run: echo "Approve for Production"
   deploy-production:
     needs: Production-approval-gate
     runs-on: ubuntu-latest
