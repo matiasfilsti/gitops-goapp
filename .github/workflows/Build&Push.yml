@@ -2,6 +2,8 @@ name: build
 
 on:
   push:
+    branches:
+      - main
 
 env:
   IMAGEREPO: filstimatias/gitops-goapp
@@ -38,8 +40,17 @@ jobs:
         tags: |
            ${{ steps.meta.outputs.tags }} 
            ${{ env.IMAGEREPO }}:${{ github.sha }}
-  deploy-staging:
+  staging-approval-gate:
     needs: build
+    environment: Staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: approved
+        env: 
+          ENV_NAME: Staging
+        run: write-host "Approve for $($env.ENV_NAME)"
+  deploy-staging:
+    needs: staging-approval-gate
     runs-on: ubuntu-latest
     steps:
     - name: changing the deployment of git repo
@@ -53,7 +64,43 @@ jobs:
         git config user.name '$USR'
         ls -la
         pwd
-        cd ./app02-golang/overlays/Staging
+        cd ${{ env.GITOPSDIR }}
+        pwd
+        cat kustomization.yaml
+        sed -i 's/newTag: .*/newTag: ${{ github.sha }}/' kustomization.yaml
+        cat kustomization.yaml
+        git add .
+        git commit -m 'Done  by Github Actions   Job changemanifest: ${{ github.run_number }}'
+        git push origin main
+      env:
+        GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
+        GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+        RUN_NUMBER: ${{ github.run_number }}
+  Production-approval-gate:
+    needs: deploy-staging
+    environment: Production
+    runs-on: ubuntu-latest
+    steps:
+      - name: approved
+        env: 
+          ENV_NAME: Production
+        run: write-host "Approve for $($env.ENV_NAME)"
+  deploy-production:
+    needs: Production-approval-gate
+    runs-on: ubuntu-latest
+    steps:
+    - name: changing the deployment of git repo
+      uses: actions/checkout@v4
+      with:
+        repository: '${{ env.GITREPO }}'
+        token: ${{ secrets.GIT_PASSWORD }}
+    - name: modify the image
+      run: |
+        git config user.email '$USRMAIL'
+        git config user.name '$USR'
+        ls -la
+        pwd
+        cd ${{ env.GITOPSDIR }}
         pwd
         cat kustomization.yaml
         sed -i 's/newTag: .*/newTag: ${{ github.sha }}/' kustomization.yaml
