@@ -40,15 +40,9 @@ jobs:
         tags: |
            ${{ steps.meta.outputs.tags }} 
            ${{ env.IMAGEREPO }}:${{ github.sha }}
-  staging-approval-gate:
+  deploy-staging:
     needs: build
     environment: Staging
-    runs-on: ubuntu-latest
-    steps:
-      - name: approved
-        run: echo "Approve for Staging"
-  deploy-staging:
-    needs: staging-approval-gate
     runs-on: ubuntu-latest
     steps:
     - name: changing the deployment of git repo
@@ -74,15 +68,9 @@ jobs:
         GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
         GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
         RUN_NUMBER: ${{ github.run_number }}
-  Production-approval-gate:
+  deploy-production:
     needs: deploy-staging
     environment: Production
-    runs-on: ubuntu-latest
-    steps:
-      - name: approved
-        run: echo "Approve for Production"
-  deploy-production:
-    needs: Production-approval-gate
     runs-on: ubuntu-latest
     steps:
     - name: changing the deployment of git repo
